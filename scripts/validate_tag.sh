@@ -25,7 +25,7 @@ if [[ ! $CI_COMMIT_TAG =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
 fi
 
 # Check if the commit ID is in the designated branch
-if ! git branch --contains $CI_COMMIT_SHA | grep -q $DESIGNATED_BRANCH; then
+if [[ $CI_COMMIT_BRANCH != $DESIGNATED_BRANCH ]]; then
     DESIGNATED_BRANCH_CHECK=false
 else
     DESIGNATED_BRANCH_CHECK=true
