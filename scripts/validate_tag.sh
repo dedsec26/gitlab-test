@@ -43,7 +43,7 @@ echo "DESIGNATED_BRANCH: $DESIGNATED_BRANCH"
 echo "CI_COMMIT_BRANCH: $CI_COMMIT_BRANCH"
 echo "CI_COMMIT_REF_NAME: $CI_COMMIT_REF_NAME"
 echo "CI_COMMIT_SHA: $CI_COMMIT_SHA"
-COMMIT_BRANCH=$(git branch -r --contains $CI_COMMIT_SHA | grep -v '\->' | cut -d '/' -f 2)
+COMMIT_BRANCH=$(git branch -r --contains $CI_COMMIT_SHA)
 echo "COMMIT_BRANCH: $COMMIT_BRANCH"
 
 # Check if CI_COMMIT_BEFORE_SHA is not all zeros
