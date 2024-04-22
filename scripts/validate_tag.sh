@@ -38,6 +38,10 @@ else
     RELEASE_BRANCH_CHECK=true
 fi
 
+echo "RELEASE_BRANCH: $RELEASE_BRANCH"
+echo "DESIGNATED_BRANCH: $DESIGNATED_BRANCH"
+echo "CI_COMMIT_BRANCH: $CI_COMMIT_BRANCH"
+
 # Check if CI_COMMIT_BEFORE_SHA is not all zeros
 if [[ "$CI_COMMIT_BEFORE_SHA" != "0000000000000000000000000000000000000000" ]]; then
     # Check if the tag is created on the latest commit of either the designated branch or the release branch
