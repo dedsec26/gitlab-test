@@ -38,12 +38,12 @@ else
     RELEASE_BRANCH_CHECK=true
 fi
 
-echo "CI_COMMIT_SHA: $CI_COMMIT_SHA"
-echo "CI_COMMIT_BEFORE_SHA: $CI_COMMIT_BEFORE_SHA"
-
-# Check if the tag is created on the latest commit of either the designated branch or the release branch
-if [[ $CI_COMMIT_SHA != $CI_COMMIT_BEFORE_SHA ]]; then
-    error_exit "Tag is not created on the latest commit of the designated branch or the release branch."
+# Check if CI_COMMIT_BEFORE_SHA is not all zeros
+if [[ "$CI_COMMIT_BEFORE_SHA" != "0000000000000000000000000000000000000000" ]]; then
+    # Check if the tag is created on the latest commit of either the designated branch or the release branch
+    if [[ $CI_COMMIT_SHA != $CI_COMMIT_BEFORE_SHA ]]; then
+        error_exit "Tag is not created on the latest commit of the designated branch or the release branch."
+    fi
 fi
 
 # If both conditions are not met, exit with error
