@@ -25,14 +25,14 @@ if [[ ! $CI_COMMIT_TAG =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
 fi
 
 # Check if the commit ID is in the designated branch
-if [[ $CI_COMMIT_BRANCH != $DESIGNATED_BRANCH ]]; then
+if git branch --contains "$DESIGNATED_BRANCH" >/dev/null 2>&1; then
     DESIGNATED_BRANCH_CHECK=false
 else
     DESIGNATED_BRANCH_CHECK=true
 fi
 
 # Check if the commit's branch name is $RELEASE_BRANCH
-if [[ $CI_COMMIT_BRANCH != $RELEASE_BRANCH ]]; then
+if git branch --contains "$RELEASE_BRANCH" >/dev/null 2>&1; then
     RELEASE_BRANCH_CHECK=false
 else
     RELEASE_BRANCH_CHECK=true
