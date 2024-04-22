@@ -47,8 +47,8 @@ COMMIT_BRANCH=$(git branch -r --contains $CI_COMMIT_SHA)
 echo "COMMIT_BRANCH: $COMMIT_BRANCH"
 echo "COMMIT_BRANCH2: $(git branch -r --contains $CI_COMMIT_SHA)"
 echo "COMMIT_BRANCH3: $(git branch --contains $CI_COMMIT_SHA)"
-echo "COMMIT_BRANCH4: $(git describe --contains $CI_COMMIT_REF_NAME)"
-echo "COMMIT_BRANCH4: $(git branch --contains $(git rev-list -n 1 $CI_COMMIT_REF_NAME))"
+echo "COMMIT_BRANCH4: $(git describe --contains $CI_COMMIT_TAG)"
+echo "COMMIT_BRANCH4: $(git branch --contains $(git rev-list -n 1 $CI_COMMIT_TAG))"
 
 # Check if CI_COMMIT_BEFORE_SHA is not all zeros
 if [[ "$CI_COMMIT_BEFORE_SHA" != "0000000000000000000000000000000000000000" ]]; then
