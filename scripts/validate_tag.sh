@@ -35,6 +35,12 @@ else
     echo "branches remote: "$(git branch --remotes)""
     echo "CI_REPOSITORY_URL: "$CI_REPOSITORY_URL""
     echo "git branch --contains HEAD: "$(git branch --contains HEAD)""
+    # Get the lastest commit of the tag
+    latest_commit="$(git rev-list -n 1 $CI_COMMIT_REF_NAME)"
+    # Get branches contain the commit
+    branches="$(git branch --contains $latest_commit)"
+    echo "latest_commit: "$latest_commit""
+    echo "branches: "$branches""
 fi
 
 # Check if the commit's branch name is $RELEASE_BRANCH
