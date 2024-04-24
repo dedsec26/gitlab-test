@@ -51,7 +51,8 @@ echo "COMMIT_BRANCH4: $(git describe --contains $CI_COMMIT_TAG)"
 echo "COMMIT_BRANCH4: $(git branch --contains $(git rev-list -n 1 $CI_COMMIT_TAG))"
 echo "DESIGNATED_BRANCHcheck: $(git branch --contains "$CI_COMMIT_SHA" | grep -q "$DESIGNATED_BRANCH")"
 echo "RELEASE_BRANCHcheck: $(git branch --contains "$CI_COMMIT_SHA" | grep -q "$RELEASE_BRANCH")"
-echo "branches: $(git branch)"
+echo "branches: "$(git branch)""
+echo "branches remote: "$(git branch --r)""
 
 
 # Check if CI_COMMIT_BEFORE_SHA is not all zeros
