@@ -30,7 +30,9 @@ if git branch -r --contains "$CI_COMMIT_SHA" | grep -q "$DESIGNATED_BRANCH"; the
     echo "Commit is in the designated branch"
 else
     DESIGNATED_BRANCH_CHECK=false
-    echo "Commit is not in the designated branch::"$(git branch -r --contains "$CI_COMMIT_SHA")""
+    echo "Commit is not in the designated branch"
+    echo "git status: "$(git status)""
+    echo "branches remote: "$(git branch --r)""
 fi
 
 # Check if the commit's branch name is $RELEASE_BRANCH
