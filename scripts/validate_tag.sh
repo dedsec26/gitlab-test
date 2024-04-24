@@ -51,7 +51,9 @@ echo "COMMIT_BRANCH4: $(git describe --contains $CI_COMMIT_TAG)"
 echo "COMMIT_BRANCH4: $(git branch --contains $(git rev-list -n 1 $CI_COMMIT_TAG))"
 echo "DESIGNATED_BRANCHcheck: $(git branch --contains "$CI_COMMIT_SHA" | grep -q "$DESIGNATED_BRANCH")"
 echo "RELEASE_BRANCHcheck: $(git branch --contains "$CI_COMMIT_SHA" | grep -q "$RELEASE_BRANCH")"
-branches
+echo "branches: $(git branch)"
+
+
 # Check if CI_COMMIT_BEFORE_SHA is not all zeros
 if [[ "$CI_COMMIT_BEFORE_SHA" != "0000000000000000000000000000000000000000" ]]; then
     # Check if the tag is created on the latest commit of either the designated branch or the release branch
