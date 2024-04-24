@@ -25,12 +25,12 @@ if [[ ! $CI_COMMIT_TAG =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
 fi
 
 # Check if the commit ID is in the designated branch
-if git branch --contains "$CI_COMMIT_SHA" | grep -q "$DESIGNATED_BRANCH"; then
+if git branch -r --contains "$CI_COMMIT_SHA" | grep -q "$DESIGNATED_BRANCH"; then
     DESIGNATED_BRANCH_CHECK=true
     echo "Commit is in the designated branch"
 else
     DESIGNATED_BRANCH_CHECK=false
-    echo "Commit is not in the designated branch::"$(git branch --contains "$CI_COMMIT_SHA")""
+    echo "Commit is not in the designated branch::"$(git branch -r --contains "$CI_COMMIT_SHA")""
 fi
 
 # Check if the commit's branch name is $RELEASE_BRANCH
@@ -39,7 +39,7 @@ if git branch --contains "$CI_COMMIT_SHA" | grep -q "$RELEASE_BRANCH"; then
     echo "Commit is in the release branch"
 else
     RELEASE_BRANCH_CHECK=false
-    echo "Commit is in the release branch"
+    echo "Commit is not in the release branch"
 fi
 
 # Check if CI_COMMIT_BEFORE_SHA is not all zeros
