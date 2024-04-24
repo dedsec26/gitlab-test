@@ -34,7 +34,7 @@ else
     echo "git status: "$(git status)""
     echo "branches remote: "$(git branch --remotes)""
     echo "CI_REPOSITORY_URL: "$CI_REPOSITORY_URL""
-    echo "git remote -v: "$(git remote -v)""
+    echo "git branch --contains HEAD: "$(git branch --contains HEAD)""
 fi
 
 # Check if the commit's branch name is $RELEASE_BRANCH
