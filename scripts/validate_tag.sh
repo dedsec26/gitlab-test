@@ -26,35 +26,21 @@ fi
 
 # Check if the commit ID is in the designated branch
 if git branch --contains "$CI_COMMIT_SHA" | grep -q "$DESIGNATED_BRANCH"; then
-    DESIGNATED_BRANCH_CHECK=false
-else
     DESIGNATED_BRANCH_CHECK=true
+    echo "Commit is in the designated branch"
+else
+    DESIGNATED_BRANCH_CHECK=false
+    echo "Commit is not in the designated branch"
 fi
 
 # Check if the commit's branch name is $RELEASE_BRANCH
 if git branch --contains "$CI_COMMIT_SHA" | grep -q "$RELEASE_BRANCH"; then
-    RELEASE_BRANCH_CHECK=false
-else
     RELEASE_BRANCH_CHECK=true
+    echo "Commit is in the release branch"
+else
+    RELEASE_BRANCH_CHECK=false
+    echo "Commit is in the release branch"
 fi
-
-echo "repo name: $(git remote show origin)"
-echo "RELEASE_BRANCH: $RELEASE_BRANCH"
-echo "DESIGNATED_BRANCH: $DESIGNATED_BRANCH"
-echo "CI_COMMIT_BRANCH: $CI_COMMIT_BRANCH"
-echo "CI_COMMIT_REF_NAME: $CI_COMMIT_REF_NAME"
-echo "CI_COMMIT_SHA: $CI_COMMIT_SHA"
-COMMIT_BRANCH=$(git branch -r --contains $CI_COMMIT_SHA)
-echo "COMMIT_BRANCH: $COMMIT_BRANCH"
-echo "COMMIT_BRANCH2: $(git branch -r --contains $CI_COMMIT_SHA)"
-echo "COMMIT_BRANCH3: $(git branch --contains $CI_COMMIT_SHA)"
-echo "COMMIT_BRANCH4: $(git describe --contains $CI_COMMIT_TAG)"
-echo "COMMIT_BRANCH4: $(git branch --contains $(git rev-list -n 1 $CI_COMMIT_TAG))"
-echo "DESIGNATED_BRANCHcheck: $(git branch --contains "$CI_COMMIT_SHA" | grep -q "$DESIGNATED_BRANCH")"
-echo "RELEASE_BRANCHcheck: $(git branch --contains "$CI_COMMIT_SHA" | grep -q "$RELEASE_BRANCH")"
-echo "branches: "$(git branch)""
-echo "branches remote: "$(git branch --r)""
-
 
 # Check if CI_COMMIT_BEFORE_SHA is not all zeros
 if [[ "$CI_COMMIT_BEFORE_SHA" != "0000000000000000000000000000000000000000" ]]; then
