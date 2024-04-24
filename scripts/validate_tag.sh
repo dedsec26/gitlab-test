@@ -38,6 +38,7 @@ else
     RELEASE_BRANCH_CHECK=true
 fi
 
+echo "repo name: $(git remote show origin)"
 echo "RELEASE_BRANCH: $RELEASE_BRANCH"
 echo "DESIGNATED_BRANCH: $DESIGNATED_BRANCH"
 echo "CI_COMMIT_BRANCH: $CI_COMMIT_BRANCH"
