@@ -33,6 +33,7 @@ else
     echo "Commit is not in the designated branch"
     echo "git status: "$(git status)""
     echo "branches remote: "$(git branch --remotes)""
+    echo "CI_REPOSITORY_URL: "$CI_REPOSITORY_URL""
 fi
 
 # Check if the commit's branch name is $RELEASE_BRANCH
