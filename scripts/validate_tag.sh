@@ -32,7 +32,7 @@ else
     DESIGNATED_BRANCH_CHECK=false
     echo "Commit is not in the designated branch"
     echo "git status: "$(git status)""
-    echo "branches remote: "$(git branch --r)""
+    echo "branches remote: "$(git branch --remotes)""
 fi
 
 # Check if the commit's branch name is $RELEASE_BRANCH
