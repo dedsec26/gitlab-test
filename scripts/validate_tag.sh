@@ -16,6 +16,9 @@ if [[ -z $RELEASE_BRANCH ]]; then
     error_exit "Release branch not provided."
 fi
 
+DESIGNATED_BRANCH_CHECK=false
+RELEASE_BRANCH_CHECK=false
+
 # Start Validation
 echo "Starting Tag Validation..."
 
@@ -25,40 +28,39 @@ if [[ ! $CI_COMMIT_TAG =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
 fi
 
 # Check if the commit ID is in the designated branch
-if git branch -r --contains "$CI_COMMIT_SHA" | grep -q "$DESIGNATED_BRANCH"; then
-    DESIGNATED_BRANCH_CHECK=true
-    echo "Commit is in the designated branch"
-else
-    DESIGNATED_BRANCH_CHECK=false
-    echo "Commit is not in the designated branch"
-    echo "git status: "$(git status)""
-    echo "branches remote: "$(git branch --remotes)""
-    echo "CI_REPOSITORY_URL: "$CI_REPOSITORY_URL""
-    echo "git branch --contains HEAD: "$(git branch --contains HEAD)""
-    # Get the lastest commit of the tag
-    latest_commit="$(git rev-list -n 1 $CI_COMMIT_REF_NAME)"
-    # Get branches contain the commit
-    branches="$(git branch --contains $latest_commit)"
-    echo "latest_commit: "$latest_commit""
-    echo "branches: "$branches""
-fi
+check_designated_branch() {
+    git fetch origin "$DESIGNATED_BRANCH" >/dev/null 2>&1 && git checkout "$DESIGNATED_BRANCH" >/dev/null 2>&1 && git branch --contains "$CI_COMMIT_SHA" >/dev/null 2>&1
 
-# Check if the commit's branch name is $RELEASE_BRANCH
-if git branch --contains "$CI_COMMIT_SHA" | grep -q "$RELEASE_BRANCH"; then
-    RELEASE_BRANCH_CHECK=true
-    echo "Commit is in the release branch"
-else
-    RELEASE_BRANCH_CHECK=false
-    echo "Commit is not in the release branch"
-fi
 
-# Check if CI_COMMIT_BEFORE_SHA is not all zeros
-if [[ "$CI_COMMIT_BEFORE_SHA" != "0000000000000000000000000000000000000000" ]]; then
-    # Check if the tag is created on the latest commit of either the designated branch or the release branch
-    if [[ $CI_COMMIT_SHA != $CI_COMMIT_BEFORE_SHA ]]; then
-        error_exit "Tag is not created on the latest commit of the designated branch or the release branch."
+    # Check the exit code of the git commands
+    if [ $? -eq 0 ]; then
+        echo "Within the designated branch"
+        DESIGNATED_BRANCH_CHECK=true
+    else
+        echo "Not in the designated branch"
     fi
-fi
+}
+
+# Check if the commit ID is in the release branch
+check_release_branch() {
+    git fetch origin "$RELEASE_BRANCH" >/dev/null 2>&1 && git checkout "$RELEASE_BRANCH" >/dev/null 2>&1 && git branch --contains "$CI_COMMIT_SHA" >/dev/null 2>&1
+
+
+    # Check the exit code of the git commands
+    if [ $? -eq 0 ]; then
+        echo "Within the release branch"
+        if [ $(git branch --show-current) == "$RELEASE_BRANCH" ]; then
+        echo "Within the release branch but not latest commit"
+            RELEASE_BRANCH_CHECK=true
+        fi
+    else
+        echo "Not in the release branch"
+    fi
+}
+
+check_designated_branch
+
+check_release_branch
 
 # If both conditions are not met, exit with error
 if [[ $DESIGNATED_BRANCH_CHECK == false && $RELEASE_BRANCH_CHECK == false ]]; then
