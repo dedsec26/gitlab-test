@@ -30,8 +30,8 @@ fi
 # Check if the commit ID is in the designated branch
 check_designated_branch() {
 
-    echo "tagData: $(git branch --contains tags/"$CI_COMMIT_TAG")"
     git fetch origin "$DESIGNATED_BRANCH" >/dev/null 2>&1 && git checkout "$DESIGNATED_BRANCH" >/dev/null 2>&1 && git branch --contains "$CI_COMMIT_SHA" >/dev/null 2>&1
+    echo "tagData: $(git branch --contains tags/"$CI_COMMIT_TAG")"
 
 
     # Check the exit code of the git commands
