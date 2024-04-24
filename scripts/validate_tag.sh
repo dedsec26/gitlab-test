@@ -49,9 +49,11 @@ check_release_branch() {
     # Check the exit code of the git commands
     if [ $? -eq 0 ]; then
         echo "Within the release branch"
-        if [ $(git branch --show-current) == "$RELEASE_BRANCH" ]; then
-        echo "Within the release branch but not latest commit"
+        if [ $(git rev-parse "$RELEASE_BRANCH") == "$CI_COMMIT_SHA" ]; then
+        echo "Within the release branch and latest commit"
             RELEASE_BRANCH_CHECK=true
+        else
+        echo "Within the release branch but not the latest commit"
         fi
     else
         echo "Not in the release branch"
