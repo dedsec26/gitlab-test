@@ -36,6 +36,12 @@ check_designated_branch() {
     # Check the exit code of the git commands
     if [ $? -eq 0 ]; then
         echo "Within the designated branch"
+        if [ $(git rev-parse "$DESIGNATED_BRANCH") == "$CI_COMMIT_SHA" ]; then
+            echo "Within the designated branch and latest commit"
+            RELEASE_BRANCH_CHECK=true
+        else
+            error_exit "Within the designated branch but not the latest commit"
+        fi
         DESIGNATED_BRANCH_CHECK=true
     else
         echo "Not in the designated branch"
@@ -61,10 +67,10 @@ check_release_branch() {
         if [[ "$minor_version" == "$branch_version" ]]; then
             echo "minor versions match"
             if [ $(git rev-parse "$RELEASE_BRANCH") == "$CI_COMMIT_SHA" ]; then
-            echo "Within the release branch and latest commit"
+                echo "Within the release branch and latest commit"
                 RELEASE_BRANCH_CHECK=true
             else
-            echo "Within the release branch but not the latest commit"
+                error_exit "Within the release branch but not the latest commit"
             fi
         else
             error_exit "Minor versions do not  match. branch: $RELEASE_BRANCH provided tag: $CI_COMMIT_TAG ideal tag format: "$branch_version".x "
