@@ -86,7 +86,7 @@ if [ $RELEASE_BRANCH_CHECK == false ]; then
     check_designated_branch
 fi
 
-if [ $DESIGNATED_BRANCH_CHECK == false]; then
+if [ $DESIGNATED_BRANCH_CHECK == false ]; then
     error_exit "Commit is not in the designated branch: $DESIGNATED_BRANCH and Commit's branch name is not release/$CI_COMMIT_TAG"
 fi
 
