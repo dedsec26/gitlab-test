@@ -14,6 +14,10 @@ fi
 
 DESIGNATED_BRANCH_CHECK=false
 RELEASE_BRANCH_CHECK=false
+tag_version=$(echo "$CI_COMMIT_TAG" | sed 's/v//')
+# Extracting the minor version (e.g., for v1.2.5, it extracts 1.2)
+minor_version=$(echo "$tag_version" | cut -d. -f1,2)
+RELEASE_BRANCH=release/"$minor_version"
 
 # Start Validation
 echo "Starting Tag Validation..."
@@ -35,21 +39,14 @@ check_designated_branch() {
         if [ $(git rev-parse "$DESIGNATED_BRANCH") == "$CI_COMMIT_SHA" ]; then
             echo "Within the designated branch and latest commit" 
             DESIGNATED_BRANCH_CHECK=true
-        else
-            error_exit "Within the designated branch but not the latest commit"
         fi
-    else
-        echo "Not in the designated branch"
     fi
 }
 
 # Check if the commit ID is in the release branch
 check_release_branch() {
 
-    tag_version=$(echo "$CI_COMMIT_TAG" | sed 's/v//')
-    # Extracting the minor version (e.g., for v1.2.5, it extracts 1.2)
-    minor_version=$(echo "$tag_version" | cut -d. -f1,2)
-    RELEASE_BRANCH=release/"$minor_version"
+
     
     git fetch origin "$RELEASE_BRANCH" >/dev/null 2>&1 && git checkout "$RELEASE_BRANCH" >/dev/null 2>&1 && git branch --contains "$CI_COMMIT_SHA" >/dev/null 2>&1
 
@@ -84,7 +81,7 @@ if [ $RELEASE_BRANCH_CHECK == false ]; then
 fi
 
 if [ $DESIGNATED_BRANCH_CHECK == false ]; then
-    error_exit "Commit is not in the designated branch: $DESIGNATED_BRANCH and Commit's branch name is not release/$CI_COMMIT_TAG"
+    error_exit "Commit is not in the designated branch: $DESIGNATED_BRANCH and Commit's branch name is not $RELEASE_BRANCH"
 fi
 
 # If all conditions are met, the tag is valid
