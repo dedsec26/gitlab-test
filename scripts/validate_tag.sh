@@ -43,10 +43,17 @@ fi
 #     fi
 # fi
 
+echo "first: $(git rev-parse "$DESIGNATED_BRANCH")"
+echo "DESIGNATED_BRANCH:  "$DESIGNATED_BRANCH""
+echo "second: $(git branch -a --contains tags/"$CI_COMMIT_TAG")"
+echo "CI_COMMIT_TAG: "$CI_COMMIT_TAG""
+echo "third: $(git rev-parse "$RELEASE_BRANCH")"
+echo "RELEASE_BRANCH: "$RELEASE_BRANCH""
+
 if [ $(git rev-parse "$DESIGNATED_BRANCH") == "$CI_COMMIT_SHA" ]; then
     echo "Tag: "$CI_COMMIT_TAG" is within the designated branch: "$DESIGNATED_BRANCH" and latest commit: "$CI_COMMIT_SHA""
 else
-    if [[ $(git branch -a --contains tags/$CI_COMMIT_TAG) == *"$RELEASE_BRANCH"* ]]; then
+    if [[ $(git branch -a --contains tags/"$CI_COMMIT_TAG") == *"$RELEASE_BRANCH"* ]]; then
         if [ $(git rev-parse "$RELEASE_BRANCH") == "$CI_COMMIT_SHA" ]; then
              echo "Tag: "$CI_COMMIT_TAG" is ithin the release branch: "$RELEASE_BRANCH" and latest commit: "$CI_COMMIT_SHA""
         else
