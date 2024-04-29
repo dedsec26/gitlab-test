@@ -6,9 +6,6 @@ error_exit() {
     echo "Error: $1" >&2
     exit 1
 }
-DESIGNATED_BRANCH="main"
-CI_COMMIT_TAG="v5.0.0"
-CI_COMMIT_SHA="0d08081032901f701a302df6827ace270a7114e9"
 # Check if the designated branch is provided
 if [[ -z $DESIGNATED_BRANCH ]]; then
     error_exit "Designated branch not provided."
