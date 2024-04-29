@@ -42,7 +42,7 @@ fi
 #         error_exit "Commit is not in the designated branch: "$DESIGNATED_BRANCH" and Commit's branch name is not "$RELEASE_BRANCH""
 #     fi
 # fi
-
+git pull --all
 echo "first: $(git rev-parse "$DESIGNATED_BRANCH")"
 echo "DESIGNATED_BRANCH:  "$DESIGNATED_BRANCH""
 echo "second: $(git branch -a --contains tags/"$CI_COMMIT_TAG")"
