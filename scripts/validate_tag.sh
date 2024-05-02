@@ -42,7 +42,9 @@ fi
 #         error_exit "Commit is not in the designated branch: "$DESIGNATED_BRANCH" and Commit's branch name is not "$RELEASE_BRANCH""
 #     fi
 # fi
+echo "before"
 git pull --all
+echo "after"
 
 if [ $(git rev-parse "$DESIGNATED_BRANCH" 2>/dev/null) == "$CI_COMMIT_SHA" ]; then
     echo "Tag: "$CI_COMMIT_TAG" is within the designated branch: "$DESIGNATED_BRANCH" and latest commit: "$CI_COMMIT_SHA""
