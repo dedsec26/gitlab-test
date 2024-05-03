@@ -16,7 +16,7 @@ fi
 tag_version=$(echo "$CI_COMMIT_TAG" | sed 's/v//')
 # Extracting the minor version (e.g., for v1.2.5, it extracts 1.2)
 minor_version=$(echo "$tag_version" | cut -d. -f1,2)
-RELEASE_BRANCH=release/"$minor_version"
+RELEASE_BRANCH=release/v"$minor_version"
 
 # Start Validation
 echo "Starting Tag Validation..."
