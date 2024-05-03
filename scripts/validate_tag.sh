@@ -67,6 +67,7 @@ if  $(git checkout $RELEASE_BRANCH >/dev/null 2>&1) ; then
         fi
     fi
 else 
+    git checkout $DESIGNATED_BRANCH >/dev/null 2>&1
     if [ $(git rev-parse "$DESIGNATED_BRANCH" 2>/dev/null) == "$CI_COMMIT_SHA" ]; then
         echo "Tag: "$CI_COMMIT_TAG" is within the designated branch: "$DESIGNATED_BRANCH" and latest commit: "$CI_COMMIT_SHA""
     else
