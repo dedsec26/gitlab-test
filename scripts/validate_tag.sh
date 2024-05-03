@@ -42,19 +42,33 @@ fi
 #         error_exit "Commit is not in the designated branch: "$DESIGNATED_BRANCH" and Commit's branch name is not "$RELEASE_BRANCH""
 #     fi
 # fi
-echo "before"
-git pull --all
-echo "after"
 
-if [ $(git rev-parse "$DESIGNATED_BRANCH" 2>/dev/null) == "$CI_COMMIT_SHA" ]; then
-    echo "Tag: "$CI_COMMIT_TAG" is within the designated branch: "$DESIGNATED_BRANCH" and latest commit: "$CI_COMMIT_SHA""
-else
-    if [[ $(git branch -a --contains tags/"$CI_COMMIT_TAG" 2>/dev/null) == *"$RELEASE_BRANCH"* ]]; then
+
+#if [ $(git rev-parse "$DESIGNATED_BRANCH" 2>/dev/null) == "$CI_COMMIT_SHA" ]; then
+#    echo "Tag: "$CI_COMMIT_TAG" is within the designated branch: "$DESIGNATED_BRANCH" and latest commit: "$CI_COMMIT_SHA""
+#else
+#    if [[ $(git branch -a --contains tags/"$CI_COMMIT_TAG" 2>/dev/null) == *"$RELEASE_BRANCH"* ]]; then
+#        if [ $(git rev-parse "$RELEASE_BRANCH" 2>/dev/null) == "$CI_COMMIT_SHA" ]; then
+#             echo "Tag: "$CI_COMMIT_TAG" is ithin the release branch: "$RELEASE_BRANCH" and latest commit: "$CI_COMMIT_SHA""
+#        else
+#            error_exit "Within the release branch: "$RELEASE_BRANCH" but not the latest commit"
+#        fi
+#    else
+#        error_exit "Commit is not in the designated branch: "$DESIGNATED_BRANCH" and the branch based on is not "$RELEASE_BRANCH""
+#    fi
+#fi
+
+if  $(git checkout $RELEASE_BRANCH >/dev/null 2>&1) ; then
+    if [[ $(git branch -a --contains tags/$CI_COMMIT_TAG 2>/dev/null) == *"$RELEASE_BRANCH"* ]]; then
         if [ $(git rev-parse "$RELEASE_BRANCH" 2>/dev/null) == "$CI_COMMIT_SHA" ]; then
-             echo "Tag: "$CI_COMMIT_TAG" is ithin the release branch: "$RELEASE_BRANCH" and latest commit: "$CI_COMMIT_SHA""
+            echo "Tag: "$CI_COMMIT_TAG" is within the release branch: "$RELEASE_BRANCH" and latest commit: "$CI_COMMIT_SHA""
         else
             error_exit "Within the release branch: "$RELEASE_BRANCH" but not the latest commit"
         fi
+    fi
+else 
+    if [ $(git rev-parse "$DESIGNATED_BRANCH" 2>/dev/null) == "$CI_COMMIT_SHA" ]; then
+        echo "Tag: "$CI_COMMIT_TAG" is within the designated branch: "$DESIGNATED_BRANCH" and latest commit: "$CI_COMMIT_SHA""
     else
         error_exit "Commit is not in the designated branch: "$DESIGNATED_BRANCH" and the branch based on is not "$RELEASE_BRANCH""
     fi
